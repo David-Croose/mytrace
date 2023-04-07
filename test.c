@@ -1,3 +1,4 @@
+#include <stdio.h>
 #include "mytrace.h"
 
 void foo1(void);
@@ -13,19 +14,20 @@ void foo1() { foo2();  };
 void foo2() { foo3();  };
 void foo3() { foo4();  };
 void foo4() { foo5();  };
-void foo5() { foo6();  };
+void foo5() {
+	int *p = NULL;
+
+	*p = 34234;
+	foo6();
+};
 void foo6() { foo7();  };
 void foo7() { };
 
 
-
-
-
-
 int main()
 {
+	signal(SIGSEGV, mytrace_sig_handler);
 	foo1();
 	foo4();
-	mytrace_dump();
 	return 0;
 }
